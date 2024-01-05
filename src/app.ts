@@ -1,6 +1,7 @@
 import express, { Application } from "express";
 import mongoose from "mongoose";
 import v1Router from "./v1/routes";
+import { errorHandler } from "./middlewares/errorHandlerMiddleware";
 
 class App {
   public app: Application;
@@ -24,10 +25,15 @@ class App {
     this.app.use("/api/v2");
   }
 
+  private setupHandlers(): void {
+    this.app.use(errorHandler);
+  }
+
   constructor() {
     this.app = express();
     this.connectDB();
     this.configureApp();
     this.setupRoutes();
+    this.setupHandlers();
   }
 }
